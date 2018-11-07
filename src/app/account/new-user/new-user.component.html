@@ -1,0 +1,53 @@
+<p>Or create new user here: </p><br>
+<mat-card>
+  <form (ngSubmit)="onCreate(createForm)" #createForm="ngForm">
+    <div class="createUserContainer">
+      <mat-form-field hintLabel="First Name">
+        <input matInput
+        name="fname"
+        type="text" 
+        maxlength="15"
+        placeholder="First name"
+        #fname="ngModel"
+        ngModel required/>
+        <mat-error *ngIf="fname.invalid">Please enter first name.</mat-error>
+      </mat-form-field>
+      <mat-form-field hintLabel="Last Name">
+        <input matInput
+        name="lname"
+        type="text" 
+        maxlength="15"
+        placeholder="Laast name"
+        #lname="ngModel"
+        ngModel required/>
+        <mat-error *ngIf="lname.invalid">Please enter last name.</mat-error>
+      </mat-form-field>
+      <mat-form-field hintLabel="Username">
+        <input matInput
+        name="username"
+        type="text" 
+        maxlength="10"
+        placeholder="Username"
+        #username="ngModel"
+        ngModel required/>
+        <mat-error *ngIf="username.invalid">Please enter username.</mat-error>
+      </mat-form-field>
+      <mat-form-field hintLabel="Max 10 characters">
+        <input matInput
+        name="password"
+        type="password" 
+        maxlength="10"
+        placeholder="password"
+        #password="ngModel"
+        ngModel required/>
+        <mat-error *ngIf="password.invalid">Please enter password.</mat-error>
+        
+      </mat-form-field>
+      
+      <br>
+      <button mat-raised-button color="primary" type="submit">Create</button>
+      
+    </div>
+    <p><font color="red">{{usernameTakenMessage}}</font></p>
+  </form>
+</mat-card>

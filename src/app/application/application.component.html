@@ -1,0 +1,95 @@
+<h3>Your application form.</h3>
+<h2>{{applicationSavedMessage}}</h2>
+<mat-card>
+  <form [formGroup] = "applicationForm" (ngSubmit)="onSubmit()">
+    <mat-form-field >
+      <input matInput     
+      formControlName="firstname"
+      type="text" 
+      maxlength="15"
+      placeholder="Firstname"
+      required/>     
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput     
+      formControlName="lastname"
+      type="text" 
+      maxlength="15"
+      placeholder="Lastname"
+      required/>     
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+        <input matInput     
+        formControlName="tel"
+        type="tel" 
+        maxlength="15"
+        placeholder="Telephone Num"
+        required/>     
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+        <input matInput     
+        formControlName="email"
+        type="email" 
+        maxlength="15"
+        placeholder="Email"
+        required/>     
+    </mat-form-field>
+    <div formGroupName="address">
+      <h3>Address:</h3>
+      <mat-form-field >
+        <input matInput     
+        formControlName="street"
+        type="text" 
+        maxlength="15"
+        placeholder="Street"
+        required/>     
+      </mat-form-field>
+      <mat-form-field >
+        <input matInput     
+        formControlName="city"
+        type="text" 
+        maxlength="15"
+        placeholder="City"
+        required/>     
+      </mat-form-field>
+      <mat-form-field >
+        <input matInput     
+        formControlName="county"
+        type="text" 
+        maxlength="15"
+        placeholder="County"
+        required/>     
+      </mat-form-field>
+      
+    </div>
+    <mat-form-field >
+      <textarea matInput     
+      formControlName="experience"
+      
+      maxlength="300"
+      placeholder="State your relevant experience."
+      cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            cdkAutosizeMinRows="2"
+            cdkAutosizeMaxRows="15"
+      required></textarea>     
+    </mat-form-field>
+    <br>
+    <mat-form-field >
+      <textarea matInput     
+      formControlName="bio"
+      
+      maxlength="300"
+      placeholder="Applicant Bio here."
+      cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            cdkAutosizeMinRows="2"
+            cdkAutosizeMaxRows="15"
+      required></textarea>     
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="!applicationForm.valid">Save</button>
+  </form>
+</mat-card>

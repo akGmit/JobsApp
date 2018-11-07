@@ -1,0 +1,36 @@
+<p>Login to access your applicattion</p><br>
+<mat-card>
+  <form (ngSubmit)="onLogIn(loginForm)" #loginForm="ngForm">
+    <div class="loginContainer">
+      <mat-form-field hintLabel="Username">
+        <input matInput
+        name="username"
+        type="text" 
+        maxlength="10"
+        placeholder="Username"
+        #username="ngModel"
+        ngModel required/>
+        <mat-error *ngIf="username.invalid">Please enter username.</mat-error>
+      </mat-form-field>
+      <mat-form-field hintLabel="Max 10 characters">
+        <input matInput
+        name="password"
+        type="password" 
+        maxlength="10"
+        placeholder="password"
+        #password="ngModel"
+        ngModel required/>
+        <mat-error *ngIf="password.invalid">Please enter password.</mat-error>
+      </mat-form-field>
+      &nbsp;&nbsp;<button mat-raised-button color="primary" type="submit"
+        >Log In</button>
+        <p><font color="red">{{wrongDetails}}</font></p>
+    </div>
+  </form>
+  <div>
+    
+  </div>
+</mat-card>
+<mat-card>
+  <button mat-raised-button color="primary" [routerLink]="['/newuser']" >Create New User</button>
+</mat-card>
