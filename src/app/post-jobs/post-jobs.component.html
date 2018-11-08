@@ -1,3 +1,78 @@
-<p>
-  post-jobs works!
-</p>
+<mat-tab-group (selectedTabChange)="onLinkClick($event); getAppliedForJobs()">
+  <mat-tab label="Your jobs list" >
+      <mat-toolbar color="warn">Jobs List</mat-toolbar>
+      <mat-accordion multi="true" *ngIf="jobs.length > 0">
+        <mat-expansion-panel [expanded]="false" *ngFor="let job of jobs">
+          <mat-expansion-panel-header>
+            {{ job.type }}
+          </mat-expansion-panel-header>
+          <p>{{ job.description }}</p>
+          <mat-action-row>
+            <button mat-button color="primary">EDIT</button>
+            <button mat-button color="warn" (click)="jobDelete(job._id)">DELETE</button>
+          </mat-action-row>
+        </mat-expansion-panel>
+      </mat-accordion>
+      <p class="info-text mat-body-1" *ngIf="jobs.length <= 0">No jobs posted!</p> 
+  </mat-tab>  
+    <mat-tab label="Post job">
+      <mat-card>
+          <form [formGroup] = "jobForm" (ngSubmit)="onSubmit()">
+            <mat-form-field >
+              <input matInput     
+              formControlName="type"
+              type="text" 
+              maxlength="40"
+              placeholder="Type of job"
+              required/>     
+            </mat-form-field>
+            <br>
+            <mat-form-field>
+              
+                <textarea matInput     
+                formControlName="description"
+                maxlength="200"
+                placeholder="State your relevant experience."
+                cdkTextareaAutosize
+                      #autosize="cdkTextareaAutosize"
+                      cdkAutosizeMinRows="2"
+                      cdkAutosizeMaxRows="15"
+                required></textarea>      
+              
+            </mat-form-field>
+            <br>
+            <button mat-raised-button color="primary" type="submit" [disabled]="!jobForm.valid">Post</button>
+          </form>
+        </mat-card>
+    </mat-tab>  
+    <mat-tab label="Jobs applied for" >
+        <mat-toolbar color="warn">Jobs List</mat-toolbar>
+        <mat-accordion multi="true" *ngIf="jobsApplied.length > 0">
+          <mat-expansion-panel [expanded]="false" *ngFor="let job of jobsApplied">
+            <mat-expansion-panel-header>
+              {{ job.type }}
+            </mat-expansion-panel-header>
+            <p>{{ job.description }}</p>
+            <mat-action-row>
+              <button mat-button color="primary">EDIT</button>
+              <button mat-button color="warn" (click)="jobDelete(job._id)">DELETE</button>
+            </mat-action-row>
+          </mat-expansion-panel>
+        </mat-accordion>
+        <p class="info-text mat-body-1" *ngIf="jobsApplied.length <= 0">No jobs posted!</p> 
+    </mat-tab>  
+</mat-tab-group>
+<!--<mat-accordion multi="true" *ngIf="posts.length > 0">
+  <mat-expansion-panel [expanded]="true" *ngFor="let post of posts">
+    <mat-expansion-panel-header>
+      {{ post.title }}
+    </mat-expansion-panel-header>
+    <p>{{ post.content }}</p>
+    <mat-action-row>
+      <button mat-button color="primary">EDIT</button>
+      <button mat-button color="warn">DELETE</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>
+<p class="info-text mat-body-1" *ngIf="posts.length <= 0">No posts added yet!</p> 
+</div>-->

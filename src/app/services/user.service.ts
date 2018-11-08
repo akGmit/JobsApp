@@ -22,7 +22,7 @@ export class UserService {
   }
   //GET USER
   getUser():any{
-    return this.user.getUser();
+    return this.user;
   }
   //SET USER APPLICATIION DATA
   setUserAppData(appData){

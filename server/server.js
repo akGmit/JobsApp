@@ -43,9 +43,17 @@ var UserSchema = new Schema({
     bio: String
 });
 
+var JobSchema = new Schema({
+    type: String,
+    description: String,
+    owner: String,
+    applicants : []
+});
+
 // Compile model from schema
 var PostModel = mongoose.model('PostModel', PostSchema );
 var UserModel = mongooseUserDb.model("Users", UserSchema);
+var JobModel = mongoose.model("Jobs", JobSchema);
 
 //Here we are configuring express to use body-parser as middle-ware. 
 app.use(bodyParser.urlencoded({ extended: false })); 
@@ -68,7 +76,6 @@ app.post('/login', function(req, res){
     //If reuturn object not null, username and password valid, send user object as response
     //If object returned from query is null, data is incorrect, send null response
     query.exec(function(err, user){
-        console.log(user);
         if(user != null){
             res.status(200).send(user);
         }else if(user === null){
@@ -92,7 +99,6 @@ app.post('/newuser', function(req, res, next){
         if(user === null){
             next();
         }else{
-            console.log("username taken");
             res.send({"usernameTaken" : true});
         }
     })
@@ -132,6 +138,70 @@ app.put('/application/:id', function(req, res){
 })
 //----------------------END APPLICATION-----------------------
 
+//------------------------JOBS-------------------------------
+//Post job
+app.post('/postjob', function(req, res){
+    var job = new JobModel({type : req.body.type, description: req.body.description, owner: req.body.owner,
+                                applicants: req.body.applicants});
+    
+    var createJob = JobModel.create(job);
+
+    createJob.then(function(job){
+        res.send(true);
+    })
+})
+
+//Get user jobs
+app.get('/getjob/:ownerID', function(req, res){
+    var ownerID = req.params.ownerID;
+
+    var getJobQuery = JobModel.find({owner : ownerID});
+
+    getJobQuery.exec(function(err, jobs){
+        res.send(jobs);
+    })
+});
+
+//Get all jobs
+app.get('/getjob', function(req, res){
+    JobModel.find(function(err, jobs){
+        res.send(jobs);
+    })
+})
+
+//Delete job
+app.delete('/deletejob/:id', function(req, res){
+
+    var jobID = req.params.id;
+
+
+    var deleteJobQuery = JobModel.deleteOne({_id: jobID});
+
+    deleteJobQuery.exec(function(err){
+        if(err){
+            res.send(false);
+        }else{
+            res.send(true);
+        }
+    });
+});
+
+//Apply for job
+app.put('/applyforjob/:userID', function(req, res){
+    var userID = req.params.userID;
+    var jobID = req.body._id;
+
+    JobModel.findByIdAndUpdate(jobID, { $push: { applicants: userID } }, function(err, up){
+    });
+})
+
+app.get('/jobsappliedfor/:id', function(req, res){
+    JobModel.find({applicants: req.params.id}, function(err, doc){
+        console.log(err);
+        console.log(doc);
+        res.send(doc);
+    })
+})
 
 var server = app.listen(8081, function () {
    var host = server.address().address
