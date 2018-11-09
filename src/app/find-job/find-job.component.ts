@@ -12,9 +12,19 @@ export class FindJobComponent implements OnInit {
   constructor(private jobService: JobService) { }
 
   private jobs : Job[] = [];
+  private emailSend;
 
   ngOnInit() {
     this.getAllJobs();
+    
+  }
+
+  sendEmail(){
+    if(this.emailSend){
+      this.emailSend = {send: false};
+    }else{
+      this.emailSend = {send: true};
+    }
   }
 
   getAllJobs(){
@@ -25,7 +35,8 @@ export class FindJobComponent implements OnInit {
   }
 
   applyForJob(job){
-    var jobid = {_id : job._id};
+    var jobid = {_id : job._id, send: this.emailSend.send};
+    
     console.log(jobid);
     this.jobService.applyForJob(jobid).subscribe(res=>{
       console.log("Apply");

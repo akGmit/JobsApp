@@ -12,6 +12,7 @@
             </mat-card-content>
             <mat-card-actions>
               <button mat-button (click)="applyForJob(job)">Apply</button>
+              <mat-checkbox  class="example-margin" (change)="sendEmail()">Send email to employer.</mat-checkbox>
             </mat-card-actions> 
             <mat-divider></mat-divider>     
         </mat-card>

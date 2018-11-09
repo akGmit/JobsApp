@@ -41,7 +41,8 @@ export class JobService {
     return this.http.get("http://localhost:8081/jobsappliedfor/"+this.userService.getUser()._id);
   }
 
-  postJob(job): Observable<any>{   
+  postJob(job): Observable<any>{
+    job.email =  this.userService.getUser().email;
     return this.http.post("http://localhost:8081/postjob", job);
   }
 

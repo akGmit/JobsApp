@@ -4,4 +4,5 @@ export class Job {
     description: String;
     owner: String;
     applicants : String[];
+    email :String;
 }

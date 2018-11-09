@@ -19,6 +19,7 @@ import { MatInputModule,
   MatExpansionModule, MatFormFieldModule, MatSelectModule, MatFormFieldControl} from '@angular/material';
   import {MatDividerModule} from '@angular/material/divider';
   import {MatListModule} from '@angular/material/list';
+  import {MatCheckboxModule} from '@angular/material/checkbox';
 
 import { RoutingModule } from './routing.module';
 
@@ -60,6 +61,7 @@ import { FindJobComponent } from './find-job/find-job.component';
     MatTabsModule,
     MatDividerModule,
     MatListModule,
+    MatCheckboxModule,
     FormsModule,
     RouterModule,
     RoutingModule,
