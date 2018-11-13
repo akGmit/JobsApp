@@ -2,66 +2,10 @@ var express = require('express');
 var app = express();
 var path = require('path');
 var bodyParser = require('body-parser');
-var nodemailer = require('nodemailer');
+var UserModel = require('./modules/user');
+var JobModel = require('./modules/job');
+var mailer = require('./mailer');
 
-var mailer = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'jobsappemailer@gmail.com',
-      pass: 'jobsapp123456'
-    }
-  });
-//Mongo db connection
-var mongoose = require('mongoose');
-var mongooseUserDb = require('mongoose');
-
-//User application db
-mongoose.connect('mongodb://lab5:a123456@ds137863.mlab.com:37863/lab5');
-//User login DB
-mongooseUserDb.connect('mongodb://lab5:a123456@ds137863.mlab.com:37863/lab5');
-
-
-
-
-
-
-//Mongoose post scheme
-var Schema = mongoose.Schema;
-
-var PostSchema = new Schema({
-    title: String,
-    content: String
-});
-//Schema for user db
-var UserSchema = new Schema({
-    id: String,
-    username: String,
-    password: String,
-    firstname: String,
-    lastname: String,
-    tel: String,
-    email: String,
-    address: 
-        {street: String,
-        city: String,
-        county: String,
-    },
-    experience: String,
-    bio: String
-});
-
-var JobSchema = new Schema({
-    type: String,
-    description: String,
-    owner: String,
-    applicants : [],
-    email: String
-});
-
-// Compile model from schema
-var PostModel = mongoose.model('PostModel', PostSchema );
-var UserModel = mongooseUserDb.model("Users", UserSchema);
-var JobModel = mongoose.model("Jobs", JobSchema);
 
 //Here we are configuring express to use body-parser as middle-ware. 
 app.use(bodyParser.urlencoded({ extended: false })); 
@@ -162,9 +106,8 @@ app.post('/postjob', function(req, res){
 
 //Get user jobs
 app.get('/getjob/:ownerID', function(req, res){
-    var ownerID = req.params.ownerID;
-
-    var getJobQuery = JobModel.find({owner : ownerID});
+    
+    var getJobQuery = JobModel.find({owner : req.params.ownerID});
 
     getJobQuery.exec(function(err, jobs){
         res.send(jobs);
@@ -181,9 +124,7 @@ app.get('/getjob', function(req, res){
 //Delete job
 app.delete('/deletejob/:id', function(req, res){
 
-    var jobID = req.params.id;
-
-    var deleteJobQuery = JobModel.deleteOne({_id: jobID});
+    var deleteJobQuery = JobModel.deleteOne({_id: req.params.id});
 
     deleteJobQuery.exec(function(err){
         if(err){
@@ -196,61 +137,28 @@ app.delete('/deletejob/:id', function(req, res){
 
 //Apply for job
 app.post('/applyforjob/:userID', function(req, res, next){
-    
-    var userID = req.params.userID;
-    var jobID = req.body._id;
 
-    JobModel.findByIdAndUpdate(jobID, { $push: { applicants: userID } }, function(err, up){
+    JobModel.findByIdAndUpdate(req.body._id, { $push: { applicants: req.params.userID } }, function(err, up){
     });
     if(req.body.send === true)
         next();
+    res.send(true);
 });
 
 //Send email for job owner if required
 app.post('/applyforjob/:userID', function(req, res){
-    
-    console.log(req.params.userID);
-    console.log(req.body._id);
-    var email;
-    if(true){
-        JobModel.findById(req.body._id, function(err, doc){
-            console.log("Job data:");
-            console.log(doc);
-            UserModel.findById(req.params.userID, function(err, user){
-                console.log("USer data: ");
-                console.log(user);
-                var mail = {
-                    from: 'jobsappemailer@gmail.com',
-                    to: doc.email,
-                    subject: 'Someone applied for the job you posted!',
-                    text: user.firstname + " " + user.lastname+"\n"+
-                            user.experience
-                  };
-
-                  mailer.sendMail(mail, function(error, info){
-                    if (error) {
-                      console.log(error);
-                    } else {
-                      console.log('Email sent: ' + info.response);
-                    }
-                  });
-            })
-            
-              
-              
+    JobModel.findById(req.body._id, function(err, doc){      
+        UserModel.findById(req.params.userID, function(err, user){           
+            mailer(doc, user);    
         })
-    }
-    
-    
-
-})
-
+    })
+});
+//Get users applied to jobs
 app.get('/jobsappliedfor/:id', function(req, res){
     JobModel.find({applicants: req.params.id}, function(err, doc){
-    
         res.send(doc);
     })
-})
+});
 //------------------------END JOBS---------------------------
 
 var server = app.listen(8081, function () {
