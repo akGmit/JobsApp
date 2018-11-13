@@ -20,7 +20,7 @@ export class AuthService {
   //Sending login infomation and returning response
   login(user:User): Observable<any>{
     //Post login details to server and return response
-    return this.http.post("http://localhost:8081/login", user);
+    return this.http.post("http://localhost:8081/account/login", user);
 
   }
 }

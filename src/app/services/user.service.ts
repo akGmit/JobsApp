@@ -18,7 +18,7 @@ export class UserService {
   }
   //CREATE NEW USER
   createNewUser(usr): Observable<any>{
-    return this.http.post("http://localhost:8081/newuser", usr);
+    return this.http.post("http://localhost:8081/account/newuser", usr);
   }
   //GET USER
   getUser():any{

@@ -11,6 +11,6 @@ export class AppService {
 
   //Put request to server with user id and application data
   createApplication(id,app): Observable<any>{
-    return this.http.put("http://localhost:8081/application/" + id , app);
+    return this.http.put("http://localhost:8081/account/application/" + id , app);
   }
 }

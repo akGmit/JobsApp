@@ -15,8 +15,7 @@ export class FindJobComponent implements OnInit {
   private emailSend = {send : false};
 
   ngOnInit() {
-    this.getAllJobs();
-    
+    this.getAllJobs();    
   }
 
   sendEmail(){

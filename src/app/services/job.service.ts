@@ -30,28 +30,28 @@ export class JobService {
   }
 
   getUserJobs(): Observable<any>{
-    return this.http.get("http://localhost:8081/getjob/" + this.userService.getUser()._id);
+    return this.http.get("http://localhost:8081/jobs/getjob/" + this.userService.getUser()._id);
   }
   
   getAllJobs(): Observable<any>{
-    return this.http.get("http://localhost:8081/getjob");
+    return this.http.get("http://localhost:8081/jobs/getjob");
   }
 
   getAppliedForJobs(): Observable<any>{
-    return this.http.get("http://localhost:8081/jobsappliedfor/"+this.userService.getUser()._id);
+    return this.http.get("http://localhost:8081/jobs/jobsappliedfor/"+this.userService.getUser()._id);
   }
 
   postJob(job): Observable<any>{
     job.email =  this.userService.getUser().email;
-    return this.http.post("http://localhost:8081/postjob", job);
+    return this.http.post("http://localhost:8081/jobs/postjob", job);
   }
 
   deleteJob(jobID): Observable<any>{
-    return this.http.delete("http://localhost:8081/deletejob/" + jobID);
+    return this.http.delete("http://localhost:8081/jobs/deletejob/" + jobID);
   }
 
   applyForJob(job): Observable<any>{
     console.log(job);
-    return this.http.post("http://localhost:8081/applyforjob/"+this.userService.getUser()._id, job);
+    return this.http.post("http://localhost:8081/jobs/applyforjob/"+this.userService.getUser()._id, job);
   }
 }
