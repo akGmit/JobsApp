@@ -12,7 +12,7 @@ export class FindJobComponent implements OnInit {
   constructor(private jobService: JobService) { }
 
   private jobs : Job[] = [];
-  private emailSend;
+  private emailSend = {send : false};
 
   ngOnInit() {
     this.getAllJobs();
@@ -20,10 +20,10 @@ export class FindJobComponent implements OnInit {
   }
 
   sendEmail(){
-    if(this.emailSend){
-      this.emailSend = {send: false};
-    }else{
+    if(this.emailSend.send === false){
       this.emailSend = {send: true};
+    }else{
+      this.emailSend = {send: false};
     }
   }
 

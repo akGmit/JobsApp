@@ -195,33 +195,35 @@ app.delete('/deletejob/:id', function(req, res){
 });
 
 //Apply for job
-app.put('/applyforjob/:userID', function(req, res, next){
+app.post('/applyforjob/:userID', function(req, res, next){
     
     var userID = req.params.userID;
     var jobID = req.body._id;
 
     JobModel.findByIdAndUpdate(jobID, { $push: { applicants: userID } }, function(err, up){
     });
-
-    next();
+    if(req.body.send === true)
+        next();
 });
 
 //Send email for job owner if required
-app.put('/applyforjob/:userID', function(req, res){
+app.post('/applyforjob/:userID', function(req, res){
     
-    console.log(req.body.send);
+    console.log(req.params.userID);
     console.log(req.body._id);
     var email;
     if(true){
-        JobModel.findById(req.body._id, 'email', function(err, doc){
-            
-            JobModel.findById(req.params.userID, function(err, user){
+        JobModel.findById(req.body._id, function(err, doc){
+            console.log("Job data:");
+            console.log(doc);
+            UserModel.findById(req.params.userID, function(err, user){
+                console.log("USer data: ");
                 console.log(user);
                 var mail = {
                     from: 'jobsappemailer@gmail.com',
                     to: doc.email,
                     subject: 'Someone applied for the job you posted!',
-                    text: user.firstname + " " + user.lastname+"/n"+
+                    text: user.firstname + " " + user.lastname+"\n"+
                             user.experience
                   };
 

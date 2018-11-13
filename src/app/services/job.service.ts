@@ -52,6 +52,6 @@ export class JobService {
 
   applyForJob(job): Observable<any>{
     console.log(job);
-    return this.http.put("http://localhost:8081/applyforjob/"+this.userService.getUser()._id, job);
+    return this.http.post("http://localhost:8081/applyforjob/"+this.userService.getUser()._id, job);
   }
 }
